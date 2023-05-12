@@ -1,0 +1,45 @@
+import numpy as np
+import random
+
+# Representar las cartas como un array de numpy
+baraja = np.array([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14])
+palos = ['corazones', 'diamantes', 'picas', 'tréboles']
+cartas = [(carta, palo) for carta in baraja for palo in palos]
+
+manos_no_jugar = ['K2', 'K3', 'K4', 'K5', 'K6', 'K7', 'K8', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 
+                  'J2', 'J3', 'J4', 'J5', 'J6', 'J7', 'J8', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 
+                  '92', '93', '94', '95', '96', '97', '98', '82', '83', '84', '85', '86', '87', '72', 
+                  '73', '74', '75', '76', '62', '63', '64', '65', '52', '53', '54', '42', '43', '32']
+manos_jugar = ['Q2', 'J2', 'J3', 'J4', 'J5', 'J6', 'T2', 'T3', 'T4', 'T5', 'T6', '92', '93', '94', '95', 
+               '96', '82', '83', '84', '85', '72', '73', '74', '75', '62', '63', '64', '52', '53', '54', 
+               '42', '43', '32']
+
+# Definir función para evaluar la fuerza de la mano
+def evaluar_mano(mano):
+    valores_cartas = [carta[0] for carta in mano]
+    valores_ordenados = sorted(valores_cartas, reverse=True)
+    cartas_ordenadas = [valores_ordenados.index(carta[0])+1 for carta in mano]
+    palos_iguales = len(set([carta[1] for carta in mano])) == 1
+    if palos_iguales:
+        if 14 in valores_cartas and 13 in valores_cartas and 12 in valores_cartas and 11 in valores_cartas and 10 in valores_cartas:
+            return 10  # escalera real de color
+        elif cartas_ordenadas[0] - cartas_ordenadas[-1] == 4:
+            return 9  # escalera de color
+        else:
+            return 6  # color
+    elif len(set(valores_cartas)) == 2:
+        for valor in set(valores_cartas):
+            if valores_cartas.count(valor) == 4:
+                return 8  # poker
+            elif valores_cartas.count(valor) == 3:
+                return 7  # full
+        return 5  # escalera
+  cartas)) == 3:
+    for valor in set(valores_cartas):
+        if valores_cartas.count(valor) == 3:
+            return 4  # trío
+    return 3  # dos pares
+elif len(set(valores_cartas)) == 4:
+    return 2  # un par
+else:
+    return 1  # carta alta
